@@ -1,0 +1,7 @@
+modality: ecg
+seed: 1
+fs: 250
+T: 1000
+C: 2
+n_samples: 32
+heart_rate_bpm: 70

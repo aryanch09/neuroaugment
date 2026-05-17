@@ -1,0 +1,80 @@
+# NeuroAugment benchmark configuration
+# Run with: neuroaugment benchmark --config configs/benchmark.yaml
+
+benchmark:
+  data_root: /data/neuroaugment          # root for downloaded datasets
+  out_dir: results/                      # output dir for JSON + table files
+  device: cuda                           # cuda | cpu | mps
+  seed: 42
+
+# Datasets to evaluate on
+datasets:
+  - mitbih     # ECG — MIT-BIH Arrhythmia  (360 Hz, 2ch, 5-class AAMI)
+  - ptbxl      # ECG — PTB-XL 12-Lead      (100 Hz, 12ch, multi-label)
+  - eegmmidb   # EEG — Motor Imagery       (160 Hz, 64ch, 3-class)
+  - bciiv2a    # EEG — BCI Competition IV  (250 Hz, 22ch, 4-class MI)
+  - ucihar     # IMU — UCI HAR             (50 Hz,  9ch,  6-class)
+  - pamap2     # IMU — PAMAP2              (100 Hz, 36ch, 18-class)
+  - wisdm      # IMU — WISDM               (20 Hz,  3ch,  6-class)
+
+# Dataset-specific overrides
+dataset_overrides:
+  mitbih:
+    window_s: 10.0
+    stride_s: 5.0
+  eegmmidb:
+    task: motor_imagery_LR
+    window_s: 2.0
+    stride_s: 1.0
+    bandpass: [4.0, 40.0]
+  pamap2:
+    window_s: 2.0
+    stride_s: 1.0
+  wisdm:
+    window_s: 2.0
+    stride_s: 1.0
+
+# Encoder architecture
+encoder:
+  type: cnn          # cnn | transformer
+  latent_dim: 128
+  hidden_dim: 128
+
+# SSL pretraining
+ssl:
+  steps: 2000
+  batch_size: 64
+  lr: 1e-3
+  loss: vicreg       # vicreg | infonce | barlow
+  temperature: 0.2
+
+# Evaluation protocols
+protocols:
+  linear_eval:
+    enabled: true
+    n_epochs: 100
+    lr: 0.01
+
+  few_shot:
+    enabled: true
+    label_fracs: [0.01, 0.05, 0.10, 0.50, 1.0]
+    n_epochs: 50
+
+  loso:
+    enabled: true
+    max_subjects: 20    # cap for speed; set null for full LOSO
+
+# Privacy-utility sweep
+privacy:
+  enabled: true
+  noise_multipliers: [0.5, 1.0, 1.5, 2.0, 3.0]
+  delta: 1.0e-5
+
+# Baselines to run
+baselines:
+  - RandomInit
+  - SimCLR-GaussNoise
+  - NeuroAugment-DRIonly      # ablation: no PLP augmentations
+  - NeuroAugment-InfoNCE      # ablation: InfoNCE instead of VICReg
+  - NeuroAugment              # proposed: causal DRI+PLP + VICReg
+  - Supervised                # upper bound

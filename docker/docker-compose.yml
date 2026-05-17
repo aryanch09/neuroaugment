@@ -1,0 +1,17 @@
+version: "3.8"
+services:
+  server:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.cpu
+    command: neuroaugment federated --config configs/federated_clients.json
+  client1:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.cpu
+    command: neuroaugment simulate --modality ecg --n-samples 16 --out /tmp/client1.npz
+  client2:
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile.cpu
+    command: neuroaugment simulate --modality eeg --n-samples 16 --out /tmp/client2.npz

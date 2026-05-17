@@ -1,0 +1,11 @@
+{
+  "rounds": 2,
+  "clients": [
+    {"id": "site_a", "weight": 100},
+    {"id": "site_b", "weight": 80},
+    {"id": "site_c", "weight": 60},
+    {"id": "site_d", "weight": 50},
+    {"id": "site_e", "weight": 40}
+  ],
+  "aggregator": "fedavg"
+}

@@ -1,0 +1,7 @@
+modality: imu
+seed: 3
+fs: 100
+T: 500
+C: 6
+n_samples: 32
+step_rate_hz: 1.8

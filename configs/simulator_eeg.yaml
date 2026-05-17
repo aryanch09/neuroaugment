@@ -1,0 +1,7 @@
+modality: eeg
+seed: 2
+fs: 250
+T: 1000
+C: 8
+n_samples: 32
+alpha_hz: 10

@@ -1,0 +1,12 @@
+seed: 13
+fs: 250
+p_apply_any: 1.0
+operators:
+  - name: channel_crosstalk
+    probability: 0.8
+  - name: device_frequency_response
+    probability: 0.8
+  - name: colored_noise_addition
+    probability: 0.9
+  - name: temporal_causal_masking
+    probability: 0.5

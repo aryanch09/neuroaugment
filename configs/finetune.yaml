@@ -1,0 +1,7 @@
+seed: 21
+epochs: 3
+batch_size: 16
+T: 256
+C: 3
+n_classes: 2
+lr: 0.001
